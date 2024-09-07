@@ -1,0 +1,174 @@
+<!-- for the infinite the scroll -->
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style>
+
+    #scrolControl .loader {
+      width: 50px;
+      aspect-ratio: 1; 
+      display: grid;
+      border-radius: 50%;
+      background:
+        linear-gradient(0deg ,rgb(0 0 0/50%) 30%,#0000 0 70%,rgb(0 0 0/100%) 0) 50%/8% 100%,
+        linear-gradient(90deg,rgb(0 0 0/25%) 30%,#0000 0 70%,rgb(0 0 0/75% ) 0) 50%/100% 8%;
+      background-repeat: no-repeat;
+      animation: l23 1s infinite steps(12);
+    }
+    #scrolControl  .loader::before,
+    #scrolControl  .loader::after {
+       content: "";
+       grid-area: 1/1;
+       border-radius: 50%;
+       background: inherit;
+       opacity: 0.915;
+       transform: rotate(30deg);
+    }
+    #scrolControl  .loader::after {
+       opacity: 0.83;
+       transform: rotate(60deg);
+    }
+    @keyframes l23 {   
+      100% {transform: rotate(1turn)}
+    }
+    .pagination{
+        display: none;
+    }
+    </style>
+
+
+
+{{inject 'noCompareMessage' (lang 'compare.no_compare')}}
+
+{{#if category.products}}
+    {{> components/products/filter sort=pagination.category.sort}}
+    {{#if category.subcategories}}
+    <div id="subcategory-urls" data-urls='{{#each category.subcategories}}{{#if @first}}{{url}}{{/if}}{{/each}}'>
+    </div>
+{{/if}}
+
+      
+
+    <div id="scrolControl" {{#if settings.data_tag_enabled}} data-list-name="Category: {{category.name}}" {{/if}}>
+        {{#if theme_settings.product_list_display_mode '===' 'grid'}}
+            {{#if settings.data_tag_enabled}}
+                {{> components/products/grid products=category.products show_compare=category.show_compare theme_settings=theme_settings event="list" }}
+            {{else}}
+                {{> components/products/grid products=category.products show_compare=category.show_compare theme_settings=theme_settings}}
+            {{/if}}
+        {{else}}
+            {{#if settings.data_tag_enabled}}
+                {{> components/products/list products=category.products show_compare=category.show_compare theme_settings=theme_settings event="list" }}
+            {{else}}
+                {{> components/products/list products=category.products show_compare=category.show_compare theme_settings=theme_settings}}
+            {{/if}}
+        {{/if}}
+         <div style="display: flex; justify-content: center; margin-bottom: 20px;">
+           <div id="loader" class="loader" style="display: none;"></div>
+         </div> 
+    </div>
+
+    {{> components/common/paginator pagination.category}}
+{{else}}
+    {{#if category.search_error}}
+        <p>{{lang 'search.errorMessage'}}</p>
+    {{else}}
+        <p data-no-products-notification
+           role="alert"
+           aria-live="assertive"
+           tabindex="-1"
+        >
+            {{lang 'categories.no_products'}}
+        </p>
+    {{/if}}
+{{/if}}
+<script>
+
+$(document).ready(function() {
+    let currentPage = 1;
+    let loading = false;
+    console.log("testing is here")
+    function loadMoreProducts() {
+        if (loading) return; 
+        loading = true;
+        
+        $('#loader').show(); 
+        
+        currentPage++;
+        
+        
+     var fullUrl = window.location.href;
+var path = window.location.pathname; 
+var pathArray = path.split('/'); 
+
+var fileName = pathArray.length == 2 ? pathArray[1] : (pathArray.length == 3 || pathArray.length == 4) ? ${pathArray[1]}/${pathArray[2]} : pathArray.length == 5 ? ${pathArray[1]}/${pathArray[2]}/${pathArray[3]} : undefined;
+
+
+
+console.log("the file name is ", /${fileName}?page= + currentPage);
+
+   
+        $.ajax({
+            url: /${fileName}?page= + currentPage,
+            method: 'GET',
+            success: function(data) {
+                let newProducts = $(data).find('.productGrid > .product');
+               
+                if (newProducts.length > 0) {
+                    $('.productGrid').append(newProducts);
+                    loading = false; 
+                } else {
+                   
+                    $(window).off('scroll', onScroll); 
+                }
+                $('#loader').hide();
+            },
+            error: function() {
+                console.error('Failed to fetch data');
+                loading = false;
+                $('#loader').hide(); 
+            }
+        });
+    }
+
+    function onScroll() {
+        let form = $('#scrolControl');
+        let formBottom = form.offset().top + form.height();
+        let windowBottom = $(window).scrollTop() + $(window).height();
+        
+        if (windowBottom >= formBottom - 10) { 
+            loadMoreProducts();
+        }
+    }
+    
+    $(window).on('scroll', onScroll);
+// Get the data-urls attribute
+
+
+});
+
+
+</script>
+<script>
+const urlsData = document.getElementById('subcategory-urls').getAttribute('data-urls');
+
+$(document).ready(function() {
+        $.ajax({
+            url: ${urlsData},
+            method: 'GET',
+            success: function(data) {
+                let newProducts = $(data).find('.productGrid > .product');
+                console.log(newProducts);
+                if (newProducts.length > 0) {
+                    $('.productGrid').prepend(newProducts);
+                  
+                } 
+               
+              
+            },
+            error: function() {
+                console.error('Failed to fetch data');
+               
+            }
+        });
+    });
+</script>
