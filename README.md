@@ -29,10 +29,14 @@ Infinite scroll improves the user experience by allowing continuous product disc
 
 My name is **Sajid Jamil**, and I am an experienced **BigCommerce developer** specializing in creating custom features like this infinite scroll for e-commerce platforms. I have extensive expertise in **front-end development**, **JavaScript**, and **BigCommerce's API**, ensuring that your e-commerce store not only functions smoothly but also offers an engaging user experience.
 
-## Contact & Hire Me
 
-Looking for a skilled **BigCommerce developer** to elevate your store? I’d love to help! Feel free to **[reach out](mailto:sajidjamil.met@gmail.com)** and let’s build something amazing together.
+## 📬 Contact Me
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/in/sajid-jameel-721256178/)
+[![Email](https://img.shields.io/badge/Email-Contact%20Me-orange?style=for-the-badge&logo=gmail)](mailto:sajidjamil.met@gmail.com)
+[![Twitter](https://img.shields.io/badge/Twitter-Connect-red?style=for-the-badge&logo=Twitter)](https://x.com/Metavizpro)
+[![Instagram](https://img.shields.io/badge/Instagram-Contact%20Me-pink?style=for-the-badge&logo=Instagram)](https://www.instagram.com/metavizpro/)
 
 ---
 
-**Sajid Jamil** – BigCommerce Expert | Front-End Developer
+**Hire me** for your next **BigCommerce** project, and let’s build a feature-rich, high-performing eCommerce platform together!
